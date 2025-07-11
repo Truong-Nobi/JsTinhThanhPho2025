@@ -1,0 +1,128 @@
+<!-- Modal login -->
+<style>
+label{cursor:pointer;user-select:none;text-decoration:none;color:inherit;transition:border 0.2s;border-bottom:2px solid rgba(142,68,173,0.2);padding:3px 2px;display:block;margin-bottom:5px;font-weight:700}
+label:hover,a:hover{border-bottom-color:#f4930c}
+select{width:100%;padding:10px;margin-bottom:10px;border:1px solid #ccc;border-radius:4px;font-size:16px}
+select:disabled{background-color:#e0e0e0;cursor:not-allowed}
+.error{color:red;margin-top:10px}
+.layout{max-width:100%;display:grid;height:100%;width:100%;overflow:hidden;grid-template-rows:40px 1fr;border-radius:0 0 5px 5px;border:1px #f4930c solid;}
+input[type="radio"]{display:none}
+label.nav{display:flex;align-items:center;justify-content:center;cursor:pointer;border-bottom:2px solid #f4930c;background:#ecf0f1;user-select:none;transition:background 0.4s,padding-left 0.2s;padding-left:0}
+input[type="radio"]:checked + .page + label.nav{background:#f4930c;color:#fff;}
+label.nav span{padding-left:0;position:relative}
+label.nav svg{left:0;top:-3px;position:absolute;width:15px;opacity:0;transition:opacity 0.2s}
+.page{grid-column-start:1;grid-row-start:2;grid-column-end:span 2;padding:0 5px;display:flex;align-items:center}
+.page-contents > *{opacity:0;transform:translateY(20px);transition:opacity 0.2s,transform 0.2s}
+.page-contents > *:nth-child(1){transition-delay:0.4s}
+.page-contents > *:nth-child(2){transition-delay:0.6s}
+.page-contents > *:nth-child(3){transition-delay:0.8s}
+.page-contents > *:nth-child(4){transition-delay:1s}
+.page-contents > *:nth-child(5){transition-delay:1.2s}
+.page-contents > *:nth-child(6){transition-delay:1.4s}
+.page-contents > *:nth-child(7){transition-delay:1.6s}
+.page-contents > *:nth-child(8){transition-delay:1.8s}
+.page-contents > *:nth-child(9){transition-delay:2s}
+.page-contents > *:nth-child(10){transition-delay:2.2s}
+.page-contents > *:nth-child(11){transition-delay:2.4s}
+.page-contents > *:nth-child(12){transition-delay:2.6s}
+.page-contents > *:nth-child(13){transition-delay:2.8s}
+.page-contents > *:nth-child(14){transition-delay:3s}
+.page-contents > *:nth-child(15){transition-delay:3.2s}
+.page-contents > *:nth-child(16){transition-delay:3.4s}
+.page-contents > *:nth-child(17){transition-delay:3.6s}
+.page-contents > *:nth-child(18){transition-delay:3.8s}
+.page-contents > *:nth-child(19){transition-delay:4s}
+.page-contents > *:nth-child(20){transition-delay:4.2s}
+input[type="radio"] + .page{transition:transform 0.2s;transform:translateX(100%)}
+input[type="radio"]:checked + .page{transform:translateX(0%)}
+input[type="radio"]:checked + .page .page-contents > *{opacity:1;transform:translateY(0px)}
+.page-contents{max-width:100%;width:100%;margin:0 auto}
+</style>
+
+<div class="modal" id="login-modal">
+  <div class="body_modal">
+    <div class="title_modal width_100 grid">
+      <div class="button_title_modal flex">
+        <div class="close button red" onclick="closemodalall()">Đóng</div>
+        <div class="back button orange" onclick="backtopall()">Đi lên</div>
+      </div>
+    </div>
+<div class="content_modal">
+
+<div class="layout">
+  <input name="nav" type="radio" class="nav home-radio" id="register" checked="checked" />
+  <div class="page home-page">
+   <div class="page-contents">
+	
+<label for='provinceSelect'>Tỉnh thành:</label><select id='provinceSelect' onchange='updateAdministrativeUnits()'>
+        <option value="" />-- Chọn Tỉnh thành --
+    </select><label for='adminUnitSelect'>Xã phường:</label><select disabled='disabled' id='adminUnitSelect'>
+        <option value="" />-- Chọn Xã phường --
+    </select>
+    <div class='error' id='errorMessage'></div>
+
+<script>
+    let geoData = null;
+    async function loadGeoJSON() {
+        try {
+            const e = await fetch("https://raw.githubusercontent.com/Truong-Nobi/JsTinhThanhPho2025/refs/heads/main/hanhchinh2025.geojson");
+            if (!e.ok) throw new Error("Không thể tải file GeoJSON");
+            geoData = await e.json(), populateProvinces()
+        } catch (e) {
+            document.getElementById("errorMessage").textContent = `Lỗi: ${e.message}`
+        }
+    }
+
+    function populateProvinces() {
+        const e = document.getElementById("provinceSelect");
+        geoData.features.forEach((t => {
+            const n = t.properties.province,
+                o = document.createElement("option");
+            o.value = n, o.textContent = n, e.appendChild(o)
+        }))
+    }
+
+    function updateAdministrativeUnits() {
+        const e = document.getElementById("provinceSelect"),
+            t = document.getElementById("adminUnitSelect"),
+            n = e.value;
+        if (t.innerHTML = '<option value="">-- Chọn Xã phường --</option>', t.disabled = !0, n) {
+            const e = geoData.features.find((e => e.properties.province === n));
+            e && e.properties.administrative_units && (e.properties.administrative_units.forEach((e => {
+                const n = document.createElement("option");
+                n.value = e, n.textContent = e, t.appendChild(n)
+            })), t.disabled = !1)
+        }
+    }
+    window.onload = loadGeoJSON
+</script>
+    </div>
+  </div>
+  <label class="nav" for="register">
+    <span>
+      Đăng Ký
+    </span>
+  </label>
+
+  <input name="nav" type="radio" class="about-radio" id="login" />
+  <div class="page about-page">
+    <div class="page-contents">
+    <div class="page-contents">
+      <h2>Đăng Nhập</h2>
+      <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quas voluptates dolore id aspernatur odit minus quidem deleniti ab rerum exercitationem dolores neque officiis explicabo possimus blanditiis sed, voluptatem ut. Ab?</p>
+      <p><label for="about">Learn more</label></p>
+    </div>
+    </div>
+  </div>
+  <label class="nav" for="login">
+    <span>
+    Đăng Nhập
+      </span>
+    </label>
+
+</div>
+</div>	
+
+  </div>
+</div>
+<!-- Modal login -->
