@@ -3,7 +3,7 @@ var citis = document.getElementById("TinhThanhPhoSelect");
 var districts = document.getElementById("QuanHuyenSelect");
 var wards = document.getElementById("ward");
 var Parameter = {
-  url: "https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/refs/heads/master/data.json", //Đường dẫn đến file chứa dữ liệu hoặc api do backend cung cấp
+  url: "https://raw.githubusercontent.com/Truong-Nobi/JsTinhThanhPho2025/refs/heads/main/hanhchinh3cap2024.json", //Đường dẫn đến file chứa dữ liệu hoặc api do backend cung cấp
   method: "GET", //do backend cung cấp
   responseType: "application/json", //kiểu Dữ liệu trả về do backend cung cấp
 };
